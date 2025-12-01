@@ -13,7 +13,7 @@ class ControlConsumer(AsyncJsonWebsocketConsumer):
         return {
             "type": "handle.msg",
             "origin": self.channel_name,
-            "payload": content,
+            "message": content,
         }
 
     async def connect(self):
@@ -38,5 +38,5 @@ class ControlConsumer(AsyncJsonWebsocketConsumer):
         if self.channel_name == event["origin"]:
             return
 
-        payload = event["payload"]
-        await self.send_json(payload)
+        message = event["message"]
+        await self.send_json(message)

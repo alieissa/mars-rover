@@ -1,7 +1,7 @@
 import { Circle } from "lucide-react"
 import { useRovers } from "./rovers.hook"
 import { RoverCommand } from "./RoverCommand"
-import { useWebSocket } from "@/useWebSocket"
+import { useRoverConnection } from "@/Rovers/useRoverConnection"
 import { useState } from "react"
 
 
@@ -9,7 +9,7 @@ const Rovers = () => {
   const [openCommandId, setOpenCommandId] = useState<string | null>(null)
 
   const { rovers } = useRovers()
-  const { connection } = useWebSocket()
+  const { connection } = useRoverConnection()
 
   const renderRover = (rover: RoverInfo) => {
     const fill = rover.status === 'active' ? '#26b585' : '#ff0000'

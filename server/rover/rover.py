@@ -36,7 +36,7 @@ class Rover:
     def _get_register_command(self):
         return json.dumps(
             {
-                "command": "register",
+                "message": "register",
                 "payload": self._get_details(),
             }
         )
@@ -45,7 +45,7 @@ class Rover:
         payload = {**self._get_details(), "y": y}
         return json.dumps(
             {
-                "command": "info",
+                "message": "info",
                 "payload": payload,
             }
         )
@@ -58,17 +58,21 @@ class Rover:
         logging.warning("### closed ###")
         sys.exit(1)
 
-    def receive(self, ws, text_message):
-        message = json.loads(text_message)
-        command = message["command"]
-        rover = message["payload"]
+    def receive(self, ws, text_event):
+        event = json.loads(text_event)
+        message = event["message"]
+        payload = event["payload"]
 
-        if command == "move" and rover["id"] == self.id:
+        if message == "command":
+            # TODO Convert the command into coordinates
+            return
+
+        if message == "move" and payload["id"] == self.id:
             for i in range(5):
                 time.sleep(1)
                 self.ws.send(self._get_move_command(i))
 
-        if command == "exit":
+        if message == "exit":
             sys.exit(1)
 
     def error(self, ws, error):
