@@ -6,19 +6,21 @@ import { Label } from "../components/ui/label"
 
 type Props = {
   id: RoverInfo['id']
-  onCommand: (command: string) => void
+  isOpen: boolean
+  onOpenChange: (openChange: boolean) => void
+  onCommand: (id: RoverInfo['id'], command: string) => void
 }
-const RoverCommand = ({ id, onCommand, children }: PropsWithChildren<Props>) => {
+const RoverCommand = ({ id, isOpen, onCommand, onOpenChange, children }: PropsWithChildren<Props>) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const formData = new FormData(e.currentTarget)
     const command = String(formData.get('command'))
 
-    onCommand(command)
+    onCommand(id, command)
   }
 
-  return <Popover>
+  return <Popover open={isOpen} onOpenChange={onOpenChange}>
     <PopoverTrigger asChild className="mb-4">
       {children}
     </PopoverTrigger>
